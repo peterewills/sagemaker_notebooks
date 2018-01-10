@@ -22,9 +22,9 @@ then
 fi
 
 
-# Get the region defined in the current configuration (default to us-east-1 if none defined)
+# Get the region defined in the current configuration (default to us-west-2 if none defined)
 region=$(aws configure get region)
-region=${region:us-east-1}
+region=${region:-us-west-2}
 
 
 fullname="${account}.dkr.ecr.${region}.amazonaws.com/${image}:latest"
@@ -38,13 +38,8 @@ then
     aws ecr create-repository --repository-name "${image}" > /dev/null
 fi
 
-# sleep for 10 seconds so the create repo has a chance to run
-sleep 10
-
-
 # Get the login command from ECR and execute it directly
 $(aws ecr get-login --region ${region} --no-include-email)
-
 
 # Build the docker image locally with the image name and then push it to ECR
 # with the full name.

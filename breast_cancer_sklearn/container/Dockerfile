@@ -10,7 +10,8 @@ LABEL maintainer="v-peter.wills@thetradedesk.com"
 
 # get programs needed
 
-RUN apt-get -y update && apt-get install -y --no-install-recommends \
+RUN apt-get -y update \
+    && apt-get install -y --no-install-recommends \
          wget \
          python \
          nginx \
@@ -20,8 +21,8 @@ RUN apt-get -y update && apt-get install -y --no-install-recommends \
 # pip install python packages. link numpy and scipy to save space & time,
 # clear cache to save space.
 
-RUN wget https://bootstrap.pypa.io/get-pip.py && python get-pip.py && \
-    pip install numpy scipy scikit-learn pandas flask gevent gunicorn && \
+RUN wget https://bootstrap.pypa.io/get-pip.py && python get-pip.py 
+RUN pip install numpy scipy scikit-learn pandas flask gevent gunicorn && \
         (cd /usr/local/lib/python2.7/dist-packages/scipy/.libs; rm *; ln ../../numpy/.libs/* .) && \
         rm -rf /root/.cache
 
